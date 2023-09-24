@@ -25,5 +25,5 @@ app.get('/', (req:Request, res:Response) => {
 
 const port: number = Number(process.env.PORT) || 9000;
 app.listen(port, () => {
-     console.log(`Insta mall API running http://localhost:${port}/`);
+     console.log(`Note App Server running http://localhost:${port}/`);
 });

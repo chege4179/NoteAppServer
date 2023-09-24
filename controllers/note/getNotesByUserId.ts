@@ -1,10 +1,49 @@
+import {z} from "zod";
+import {TypedRequestParams} from "../../types/TypedRequestParams";
+import {BaseResponse} from "../../types/BaseResponse";
+import {Note} from "@prisma/client";
+import {Response} from "express";
+import prisma from "../../config/db";
 
 
-const getNotesByUserId = async (req,res) => {
+const Schema = z.object({
+     userId:z.string()
+})
+type RequestParams = z.infer<typeof Schema>
+
+interface ResponseBody extends BaseResponse{
+     notes:Note[] | null
+}
+
+const getNotesByUserId = async (req:TypedRequestParams<RequestParams>,res:Response<ResponseBody>) => {
      try{
+          const validationResult = Schema.safeParse(req.params)
+          if (validationResult.success){
+               const notes = await prisma.note.findMany({
+                    where:{
+                         noteAuthorId:req.params.userId
+                    }
+               })
+               return res.json({
+                    msg:`Note by User ${req.params.userId}`,
+                    success:true,
+                    notes:notes,
+               })
+          }else {
 
+               return res.json({
+                    msg:"Invalid request body",
+                    success:false,
+                    notes:null,
+               })
+          }
      }catch (e){
-
+          console.log("Error",e)
+          return res.json({
+               msg:"An unexpected error ocurred trying to delete",
+               success:false,
+               notes:null
+          })
      }
 }
 
