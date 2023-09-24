@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("LOCAL_DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("REMOTE_DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -28,7 +28,7 @@ model Note {
   noteAuthor   User     @relation(fields: [noteAuthorId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   noteTitle    String
   noteColor    Int
-  noteContent  String   @db.MediumText
+  noteContent  String   @db.VarChar(10000)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
