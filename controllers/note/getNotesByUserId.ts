@@ -25,12 +25,11 @@ const getNotesByUserId = async (req:TypedRequestParams<RequestParams>,res:Respon
                     }
                })
                return res.json({
-                    msg:`Note by User ${req.params.userId}`,
+                    msg:`Notes by User ${req.params.userId}`,
                     success:true,
                     notes:notes,
                })
           }else {
-
                return res.json({
                     msg:"Invalid request body",
                     success:false,
@@ -40,7 +39,7 @@ const getNotesByUserId = async (req:TypedRequestParams<RequestParams>,res:Respon
      }catch (e){
           console.log("Error",e)
           return res.json({
-               msg:"An unexpected error ocurred trying to delete",
+               msg:"An unexpected error ocurred getting notes ",
                success:false,
                notes:null
           })
